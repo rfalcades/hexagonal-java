@@ -23,15 +23,29 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set("springCloudVersion", "2023.0.3")
+	set("mapstructVersion", "1.5.5.Final")
+}
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
-	implementation("org.mapstruct:mapstruct-processor:1.5.5.Final")
+
+    implementation("org.mapstruct:mapstruct:${property("mapstructVersion")}")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${property("mapstructVersion")}")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+	}
 }
 
 tasks.withType<Test> {
